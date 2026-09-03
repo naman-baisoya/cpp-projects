@@ -1,0 +1,149 @@
+#include <iostream>
+using namespace std;
+
+// Logic gates
+bool ANDGate(bool a, bool b) {
+    return a && b;
+}
+
+bool ORGate(bool a, bool b) {
+    return a || b;
+}
+
+bool NOTGate(bool a) {
+    return !a;
+}
+
+bool NANDGate(bool a, bool b) {
+    return !(a && b);
+}
+
+bool NORGate(bool a, bool b) {
+    return !(a || b);
+}
+
+bool XORGate(bool a, bool b) {
+    return a != b;
+}
+
+bool XNORGate(bool a, bool b) {
+    return a == b;
+}
+
+// Test a gate
+void testGate() {
+    int choice;
+    bool a, b;
+
+    cout << "\n1. AND\n";
+    cout << "2. OR\n";
+    cout << "3. NOT\n";
+    cout << "4. NAND\n";
+    cout << "5. NOR\n";
+    cout << "6. XOR\n";
+    cout << "7. XNOR\n";
+
+    cout << "Choose gate: ";
+    cin >> choice;
+
+    if (choice == 3) {
+        cout << "Enter A (0 or 1): ";
+        cin >> a;
+
+        cout << "Output: " << NOTGate(a) << endl;
+    }
+    else if (choice >= 1 && choice <= 7) {
+        cout << "Enter A (0 or 1): ";
+        cin >> a;
+
+        cout << "Enter B (0 or 1): ";
+        cin >> b;
+
+        if (choice == 1)
+            cout << "Output: " << ANDGate(a, b) << endl;
+        else if (choice == 2)
+            cout << "Output: " << ORGate(a, b) << endl;
+        else if (choice == 4)
+            cout << "Output: " << NANDGate(a, b) << endl;
+        else if (choice == 5)
+            cout << "Output: " << NORGate(a, b) << endl;
+        else if (choice == 6)
+            cout << "Output: " << XORGate(a, b) << endl;
+        else
+            cout << "Output: " << XNORGate(a, b) << endl;
+    }
+    else {
+        cout << "Invalid choice.\n";
+    }
+}
+
+// Generate truth table
+void truthTable() {
+    int choice;
+
+    cout << "\n1. AND\n";
+    cout << "2. OR\n";
+    cout << "3. NAND\n";
+    cout << "4. NOR\n";
+    cout << "5. XOR\n";
+    cout << "6. XNOR\n";
+
+    cout << "Choose gate: ";
+    cin >> choice;
+
+    if (choice < 1 || choice > 6) {
+        cout << "Invalid choice.\n";
+        return;
+    }
+
+    cout << "\nA B | Output\n";
+    cout << "------------\n";
+
+    for (int a = 0; a <= 1; a++) {
+        for (int b = 0; b <= 1; b++) {
+
+            bool output;
+
+            if (choice == 1)
+                output = ANDGate(a, b);
+            else if (choice == 2)
+                output = ORGate(a, b);
+            else if (choice == 3)
+                output = NANDGate(a, b);
+            else if (choice == 4)
+                output = NORGate(a, b);
+            else if (choice == 5)
+                output = XORGate(a, b);
+            else
+                output = XNORGate(a, b);
+
+            cout << a << " " << b << " |   " << output << endl;
+        }
+    }
+}
+
+int main() {
+    int choice;
+
+    do {
+        cout << "\n===== LOGIC GATE SIMULATOR =====\n";
+        cout << "1. Test Gate\n";
+        cout << "2. Truth Table\n";
+        cout << "3. Exit\n";
+
+        cout << "Choose: ";
+        cin >> choice;
+
+        if (choice == 1)
+            testGate();
+        else if (choice == 2)
+            truthTable();
+        else if (choice == 3)
+            cout << "Goodbye!\n";
+        else
+            cout << "Invalid choice.\n";
+
+    } while (choice != 3);
+
+    return 0;
+}
