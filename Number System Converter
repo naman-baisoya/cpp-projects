@@ -1,0 +1,330 @@
+#include <iostream>
+#include <stack>
+#include <string>
+#include <cctype>
+
+using namespace std;
+
+// ---------------- DECIMAL TO BINARY ----------------
+
+void decimalToBinary(int number) {
+
+    if (number == 0) {
+        cout << "Binary = 0\n";
+        return;
+    }
+
+    stack<int> remainderStack;
+
+    int original = number;
+
+    cout << "\nConversion steps:\n";
+
+    while (number > 0) {
+
+        int remainder = number % 2;
+
+        cout << number << " / 2 = "
+             << number / 2
+             << " remainder "
+             << remainder << endl;
+
+        remainderStack.push(remainder);
+
+        number = number / 2;
+    }
+
+    cout << "\nStack (top to bottom): ";
+
+    stack<int> temp = remainderStack;
+
+    while (!temp.empty()) {
+        cout << temp.top() << " ";
+        temp.pop();
+    }
+
+    cout << "\n";
+
+    cout << "Binary = ";
+
+    while (!remainderStack.empty()) {
+        cout << remainderStack.top();
+        remainderStack.pop();
+    }
+
+    cout << endl;
+}
+
+// ---------------- DECIMAL TO OCTAL ----------------
+
+void decimalToOctal(int number) {
+
+    if (number == 0) {
+        cout << "Octal = 0\n";
+        return;
+    }
+
+    stack<int> remainderStack;
+
+    cout << "\nConversion steps:\n";
+
+    while (number > 0) {
+
+        int remainder = number % 8;
+
+        cout << number << " / 8 = "
+             << number / 8
+             << " remainder "
+             << remainder << endl;
+
+        remainderStack.push(remainder);
+
+        number = number / 8;
+    }
+
+    cout << "\nOctal = ";
+
+    while (!remainderStack.empty()) {
+        cout << remainderStack.top();
+        remainderStack.pop();
+    }
+
+    cout << endl;
+}
+
+// ---------------- DECIMAL TO HEXADECIMAL ----------------
+
+void decimalToHexadecimal(int number) {
+
+    if (number == 0) {
+        cout << "Hexadecimal = 0\n";
+        return;
+    }
+
+    stack<int> remainderStack;
+
+    cout << "\nConversion steps:\n";
+
+    while (number > 0) {
+
+        int remainder = number % 16;
+
+        cout << number << " / 16 = "
+             << number / 16
+             << " remainder "
+             << remainder << endl;
+
+        remainderStack.push(remainder);
+
+        number = number / 16;
+    }
+
+    cout << "\nHexadecimal = ";
+
+    while (!remainderStack.empty()) {
+
+        int value = remainderStack.top();
+        remainderStack.pop();
+
+        if (value < 10)
+            cout << value;
+        else
+            cout << char('A' + value - 10);
+    }
+
+    cout << endl;
+}
+
+// ---------------- BINARY TO DECIMAL ----------------
+
+int binaryToDecimal(string binary) {
+
+    int decimal = 0;
+
+    for (char digit : binary) {
+
+        if (digit != '0' && digit != '1') {
+            return -1;
+        }
+
+        decimal = decimal * 2 + (digit - '0');
+    }
+
+    return decimal;
+}
+
+// ---------------- OCTAL TO DECIMAL ----------------
+
+int octalToDecimal(string octal) {
+
+    int decimal = 0;
+
+    for (char digit : octal) {
+
+        if (digit < '0' || digit > '7') {
+            return -1;
+        }
+
+        decimal = decimal * 8 + (digit - '0');
+    }
+
+    return decimal;
+}
+
+// ---------------- HEXADECIMAL TO DECIMAL ----------------
+
+int hexadecimalToDecimal(string hexadecimal) {
+
+    int decimal = 0;
+
+    for (char digit : hexadecimal) {
+
+        int value;
+
+        if (digit >= '0' && digit <= '9') {
+            value = digit - '0';
+        }
+        else if (digit >= 'A' && digit <= 'F') {
+            value = digit - 'A' + 10;
+        }
+        else if (digit >= 'a' && digit <= 'f') {
+            value = digit - 'a' + 10;
+        }
+        else {
+            return -1;
+        }
+
+        decimal = decimal * 16 + value;
+    }
+
+    return decimal;
+}
+
+// ---------------- MAIN PROGRAM ----------------
+
+int main() {
+
+    int choice;
+
+    do {
+
+        cout << "\n====================================\n";
+        cout << "       NUMBER SYSTEM CONVERTER\n";
+        cout << "====================================\n";
+
+        cout << "1. Decimal to Binary\n";
+        cout << "2. Binary to Decimal\n";
+        cout << "3. Decimal to Octal\n";
+        cout << "4. Octal to Decimal\n";
+        cout << "5. Decimal to Hexadecimal\n";
+        cout << "6. Hexadecimal to Decimal\n";
+        cout << "7. Exit\n";
+
+        cout << "Choose an option: ";
+        cin >> choice;
+
+        // Decimal to Binary
+        if (choice == 1) {
+
+            int number;
+
+            cout << "\nEnter decimal number: ";
+            cin >> number;
+
+            if (number < 0) {
+                cout << "Please enter a positive number.\n";
+            }
+            else {
+                decimalToBinary(number);
+            }
+        }
+
+        // Binary to Decimal
+        else if (choice == 2) {
+
+            string binary;
+
+            cout << "\nEnter binary number: ";
+            cin >> binary;
+
+            int result = binaryToDecimal(binary);
+
+            if (result == -1)
+                cout << "Invalid binary number.\n";
+            else
+                cout << "Decimal = " << result << endl;
+        }
+
+        // Decimal to Octal
+        else if (choice == 3) {
+
+            int number;
+
+            cout << "\nEnter decimal number: ";
+            cin >> number;
+
+            if (number < 0)
+                cout << "Please enter a positive number.\n";
+            else
+                decimalToOctal(number);
+        }
+
+        // Octal to Decimal
+        else if (choice == 4) {
+
+            string octal;
+
+            cout << "\nEnter octal number: ";
+            cin >> octal;
+
+            int result = octalToDecimal(octal);
+
+            if (result == -1)
+                cout << "Invalid octal number.\n";
+            else
+                cout << "Decimal = " << result << endl;
+        }
+
+        // Decimal to Hexadecimal
+        else if (choice == 5) {
+
+            int number;
+
+            cout << "\nEnter decimal number: ";
+            cin >> number;
+
+            if (number < 0)
+                cout << "Please enter a positive number.\n";
+            else
+                decimalToHexadecimal(number);
+        }
+
+        // Hexadecimal to Decimal
+        else if (choice == 6) {
+
+            string hexadecimal;
+
+            cout << "\nEnter hexadecimal number: ";
+            cin >> hexadecimal;
+
+            int result = hexadecimalToDecimal(hexadecimal);
+
+            if (result == -1)
+                cout << "Invalid hexadecimal number.\n";
+            else
+                cout << "Decimal = " << result << endl;
+        }
+
+        else if (choice == 7) {
+            cout << "\nProgram ended.\n";
+            cout << "Thank you!\n";
+        }
+
+        else {
+            cout << "\nInvalid choice! Please try again.\n";
+        }
+
+    } while (choice != 7);
+
+    return 0;
+}
