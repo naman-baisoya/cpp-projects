@@ -122,7 +122,6 @@ int main()
 
     int choice;
     cout<<"\n";
-    cout<<"Note: Always enter NON_NEGATIVE and NUMERIC value only :"<<endl;
     cout << "SMART TRAFFIC SIGNAL CONTROLLER\n";
 
     while (true)
