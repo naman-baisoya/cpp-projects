@@ -1,23 +1,23 @@
 #include <iostream>
 #include <vector>
+#include <limits>
 
 using namespace std;
 
 // First Fit Algorithm
-void firstFit(vector<int> blocks, vector<int> processes)
+void firstFit(const vector<int>& blocks, const vector<int>& processes)
 {
     vector<bool> allocated(blocks.size(), false);
 
-    cout << "\n FIRST FIT \n";
+    cout << "\nFIRST FIT \n";
 
-    for (int i = 0; i < processes.size(); i++)
+    for (size_t i = 0; i < processes.size(); i++)
     {
         bool found = false;
 
-        for (int j = 0; j < blocks.size(); j++)
+        for (size_t j = 0; j < blocks.size(); j++)
         {
-            if (allocated[j] == false &&
-                blocks[j] >= processes[i])
+            if (!allocated[j] && blocks[j] >= processes[i])
             {
                 cout << "Process " << i + 1
                      << " (" << processes[i] << " KB)"
@@ -25,12 +25,11 @@ void firstFit(vector<int> blocks, vector<int> processes)
 
                 allocated[j] = true;
                 found = true;
-
                 break;
             }
         }
 
-        if (found == false)
+        if (!found)
         {
             cout << "Process " << i + 1
                  << " (" << processes[i] << " KB)"
@@ -40,23 +39,21 @@ void firstFit(vector<int> blocks, vector<int> processes)
 }
 
 // Best Fit Algorithm
-void bestFit(vector<int> blocks, vector<int> processes)
+void bestFit(const vector<int>& blocks, const vector<int>& processes)
 {
     vector<bool> allocated(blocks.size(), false);
 
-    cout << "\n BEST FIT \n";
+    cout << "\nBEST FIT\n";
 
-    for (int i = 0; i < processes.size(); i++)
+    for (size_t i = 0; i < processes.size(); i++)
     {
         int bestBlock = -1;
 
-        for (int j = 0; j < blocks.size(); j++)
+        for (size_t j = 0; j < blocks.size(); j++)
         {
-            if (allocated[j] == false &&
-                blocks[j] >= processes[i])
+            if (!allocated[j] && blocks[j] >= processes[i])
             {
-                if (bestBlock == -1 ||
-                    blocks[j] < blocks[bestBlock])
+                if (bestBlock == -1 || blocks[j] < blocks[bestBlock])
                 {
                     bestBlock = j;
                 }
@@ -81,23 +78,21 @@ void bestFit(vector<int> blocks, vector<int> processes)
 }
 
 // Worst Fit Algorithm
-void worstFit(vector<int> blocks, vector<int> processes)
+void worstFit(const vector<int>& blocks, const vector<int>& processes)
 {
     vector<bool> allocated(blocks.size(), false);
 
-    cout << "\n WORST FIT \n";
+    cout << "\nWORST FIT \n";
 
-    for (int i = 0; i < processes.size(); i++)
+    for (size_t i = 0; i < processes.size(); i++)
     {
         int worstBlock = -1;
 
-        for (int j = 0; j < blocks.size(); j++)
+        for (size_t j = 0; j < blocks.size(); j++)
         {
-            if (allocated[j] == false &&
-                blocks[j] >= processes[i])
+            if (!allocated[j] && blocks[j] >= processes[i])
             {
-                if (worstBlock == -1 ||
-                    blocks[j] > blocks[worstBlock])
+                if (worstBlock == -1 || blocks[j] > blocks[worstBlock])
                 {
                     worstBlock = j;
                 }
@@ -127,49 +122,73 @@ int main()
     int numberOfProcesses;
     int choice;
 
-
     cout << "::MEMORY ALLOCATION SIMULATOR::\n";
 
-
-    // Enter memory blocks
-    cout << "\nEnter number of memory blocks: ";
-    cin >> numberOfBlocks;
+    // Enter memory blocks with validation
+    while (true)
+    {
+        cout << "Enter number of memory blocks: ";
+        if (cin >> numberOfBlocks && numberOfBlocks > 0) break;
+        cout << "Invalid input.\n";
+        cin.clear();
+        cin.ignore(10000, '\n');
+    }
 
     vector<int> blocks(numberOfBlocks);
-
     cout << "Enter memory block sizes (KB):\n";
-
     for (int i = 0; i < numberOfBlocks; i++)
     {
-        cout << "Block " << i + 1 << ": ";
-        cin >> blocks[i];
+        while (true)
+        {
+            cout << "Block " << i + 1 << ": ";
+            if (cin >> blocks[i] && blocks[i] > 0) break;
+            cout << "Invalid size. Must be greater than 0.\n";
+            cin.clear();
+            cin.ignore(10000, '\n');
+        }
     }
 
-    // Enter processes
-    cout << "\nEnter number of processes: ";
-    cin >> numberOfProcesses;
+    // Enter processes with validation
+    while (true)
+    {
+        cout << "\nEnter number of processes: ";
+        if (cin >> numberOfProcesses && numberOfProcesses > 0) break;
+        cout << "Invalid input. Please enter a positive integer.\n";
+        cin.clear();
+        cin.ignore(10000, '\n');
+    }
 
     vector<int> processes(numberOfProcesses);
-
     cout << "Enter process sizes (KB):\n";
-
     for (int i = 0; i < numberOfProcesses; i++)
     {
-        cout << "Process " << i + 1 << ": ";
-        cin >> processes[i];
+        while (true)
+        {
+            cout << "Process " << i + 1 << ": ";
+            if (cin >> processes[i] && processes[i] > 0) break;
+            cout << "Invalid size. Must be greater than 0.\n";
+            cin.clear();
+            cin.ignore(10000, '\n');
+        }
     }
 
-    // Menu
+    // Menu loop with validation
     do
     {
-        cout<<"\n";
+        cout << "\n";
         cout << "1. First Fit\n";
         cout << "2. Best Fit\n";
         cout << "3. Worst Fit\n";
         cout << "4. Exit\n";
         cout << "Choose an option: ";
 
-        cin >> choice;
+        if (!(cin >> choice))
+        {
+            cout << "\nInvalid input! Please enter a number.\n";
+            cin.clear();
+            cin.ignore(10000, '\n');
+            continue;
+        }
 
         if (choice == 1)
         {
@@ -189,7 +208,7 @@ int main()
         }
         else
         {
-            cout << "\nInvalid choice.\n";
+            cout << "\nInvalid choice. Please choose between 1 and 4.\n";
         }
 
     } while (choice != 4);
